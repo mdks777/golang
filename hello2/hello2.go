@@ -5,6 +5,16 @@ import (
 	//"."にするとpackage無名でいける
 	"runtime"
 )
+var I = ""
+func isit() {
+	I +="a"
+}
+func init() {
+	I +="b"
+}
+func init() {
+	I +="c"
+}
 
 func main() {
 	var xy int
@@ -188,6 +198,9 @@ L:
 		defer fmt.Printf("3")
 	}()//一番最後に321
 	runDefer()//done321
+	
+	fmt.Printf("AAAAA")
+	fmt.Println(I)
 	/*go func() {
 		for {
 			fmt.Printf("sub loop")
@@ -204,8 +217,7 @@ L:
 	//NimCPU:=8
     //NumGoroutine:=1
 	//Version:=go1.12.6
-
-	fmt.Println(I)
+	
 }
 
 
@@ -299,13 +311,3 @@ func runDefer() {
 	fmt.Printf("done")
 }
 
-var I = ""
-func isit() {
-	I =I+"A"
-}
-func init() {
-	I =I+"B"
-}
-func init() {
-	I =I+"C"
-}
