@@ -186,7 +186,7 @@ L:
 		defer fmt.Printf("1")
 		defer fmt.Printf("2")
 		defer fmt.Printf("3")
-	}()//一番最後に321
+	}()//一番最後（文末）に321
 	runDefer()//done321
 	/*go func() {
 		for {
@@ -206,6 +206,29 @@ L:
 	//Version:=go1.12.6
 
 	fmt.Println(I)
+
+	ss := make([]int,5,10)
+	for i:=0;i<5;i++ {ss[i]=i}
+	fmt.Println(ss,len(ss),cap(ss))//[0 1 2 3 4] 5 10
+	fmt.Println(ss[2:4])//[2 3]
+	//スライス名[該当数字(無ければ[0])以上：該当数字(なければ[len(変数名)])未満]
+	Ss:=make([]int,5)
+	for i:=5;i<10;i++{Ss[i-5]=i}
+	fmt.Println(append(ss,Ss...)) //[0 1 2 3 4 5 6 7 8 9]
+
+	sS:=make([]int,0,0)
+	fmt.Println(len(sS),cap(sS))// 0 0
+	sS=append(sS,1)
+	fmt.Println(len(sS),cap(sS))// 1 2
+	sS=append(sS,[]int{2,3,4}...)
+	fmt.Println(len(sS),cap(sS))// 4 4
+	sS=append(sS,5)
+	fmt.Println(len(sS),cap(sS))// 5 8
+	sS=append(sS,6,7,8,9)
+	fmt.Println(len(sS),cap(sS))// 9 16
+	//capは足りなくなったら2のｎ乗になる
+
+	
 }
 
 
