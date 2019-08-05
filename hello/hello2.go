@@ -185,7 +185,7 @@ L:
 	defer func() {
 		defer fmt.Printf("1")
 		defer fmt.Printf("2")
-		defer fmt.Printf("3")
+		defer fmt.Printf("\n3")
 	}()//一番最後（文末）に321
 	runDefer()//done321
 	/*go func() {
@@ -251,6 +251,27 @@ L:
 	//len(n)==b-a
 	//cap(n)==c-a
 	//[要素and容量の最小値：要素の最大値：容量の最大値]
+
+	sas :=[]string{"a","b","c"}
+	for i, r:=range sas {
+		fmt.Printf("%d,%s ",i,r)
+	}//0,0 1,1 2,2 3,3 4,4 5,5 6,6 7,7 8,8 9,9
+	
+	for i:=0;i<len(sas);i++ {
+		fmt.Printf("%d,%s ",i,sas[i])
+		sas = append(sas, "d")//要素の追加
+		if i == 10 {break}
+	}//0,a 1,b 2,c 0,a 1,b 2,c 3,d 4,d 5,d 6,d 7,d 8,d 9,d 10,d
+	//途中で追加しても結局は最後尾に追加される	
+
+	fmt.Println(sum(1,2,3),sum(1,2,3,4,5),sum())//6 15 0
+	
+	a1:=[3]int{1,2,3}
+	a2:=[]int{1,2,3}
+	pow1(a1)//値をコピーしただけだからmainのa1は動いていない
+	pow2(a2)//とりま、動くらしい
+	fmt.Println(a1,a2)//[1 2 3] [1 4 9]
+
 }
 
 
@@ -353,4 +374,25 @@ func init() {
 }
 func init() {
 	I =I+"C"
+}
+
+func sum(s ...int) int{
+	n:=0
+	for _,v:=range s {
+		n+=v
+	}
+	return n
+}
+
+func pow1(a1 [3]int){
+	for i,v := range a1 {
+		a1[i]=v*v
+	}
+	return
+}
+func pow2(a2 []int){
+	for i,v := range a2 {
+		a2[i]=v*v
+	}
+	return
 }
