@@ -263,8 +263,10 @@ L:
 		if i == 10 {break}
 	}//0,a 1,b 2,c 0,a 1,b 2,c 3,d 4,d 5,d 6,d 7,d 8,d 9,d 10,d
 	//途中で追加しても結局は最後尾に追加される	
-
-	fmt.Println(sum(1,2,3),sum(1,2,3,4,5),sum())//6 15 0
+	fmt.Printf("\n")
+	
+	asa:=[]int{1,2,3,4,5}
+	fmt.Println(sum(1,2,3),sum(asa...),sum())//6 15 0
 	
 	a1:=[3]int{1,2,3}
 	a2:=[]int{1,2,3}
@@ -272,6 +274,67 @@ L:
 	pow2(a2)//とりま、動くらしい
 	fmt.Println(a1,a2)//[1 2 3] [1 4 9]
 
+		ab:=[3]int{0,1,2}
+	aba:=ab[:]//ab(配列)とaba(スライス)は共有している
+	fmt.Println(len(aba))//3
+	fmt.Println(cap(aba))//3
+	ab[0]=9
+	fmt.Println(ab,aba)//[9 1 2] [9 1 2]ー＞abを変えたら両方
+		ab=[3]int{0,1,2}//リセット
+	aba=append(aba,3)//要素の追加により別のメモリ上の配列にさし代わる
+	fmt.Println(len(aba))//4
+	fmt.Println(cap(aba))//8
+	ab[0]=9
+	fmt.Println(ab,aba)//[9 1 2] [0 1 2 3]ー＞abを変えてもabaに影響がない
+
+	m:=make(map[int]string)//var m map[int]string
+	m[1]="US"
+	m[81]="JAPAN"
+	m[83]="CHAINA"
+	///m:=map[int]string{1:"US", 81:"JAPAN", 83:"CHAINA"}
+	fmt.Println(m)//map[1:US 81:JAPAN 83:CHAINA]
+	m1:=make(map[string]string)
+	m1["Yamada"]="Taro"
+	m1["Sato"]="Taichi"
+	m1["Yamada"]="Jiro"
+	fmt.Println(m1)//map[Sato:Taichi Yamada:Jiro]
+		m2:=make(map[float64]int)
+	m2[1.000000000000000000000001]=1
+	m2[1.000000000000000000000002]=2
+	m2[1.000000000000000000000003]=3
+	fmt.Println(m2)//map[1:3]
+		ma:=map[int][]int{//キーがintで要素が[]int
+		1: {1},//[]int{1}と同じ
+		2: {1,2},
+		3: {1,2,3},
+	}
+	fmt.Println(ma)//map[1:[1] 2:[1 2] 3:[1 2 3]]
+		ma1:=map[int]map[float64]string{
+		1: {3.14: "円周率"},
+		2: {1.414: "ルート２"},
+	}
+	fmt.Println(ma1)//map[1:map[3.14:円周率] 2:map[1.414:ルート２]]
+		ma2:=map[int]string{1:"A",2:"B",3:"C"}
+	fmt.Println(ma2[2],ma2[6])//B ""(空白)
+	mm,ok:=ma2[1]
+	fmt.Println(mm,ok)//A true
+	mm,ok=ma2[7]
+	fmt.Println(mm,ok)// false 空白あり
+	_,ok=ma2[3]
+	fmt.Println(ok)//true
+	if _,ok =ma2[1];ok{
+		fmt.Printf("ma2[1]の存在確認")
+	}//作動
+	ma2[4]="D"
+	ma2[6]="F"
+	ma2[5]="E"
+	for k,v:=range ma2{
+		fmt.Println(k,v)
+	}
+	//キーの順番で表示されるかどうか「不定」毎回変わる
+	delete(ma2,2)
+	fmt.Println(ma2)//map[1:A 3:C 4:D 5:E 6:F]
+	//m:=make(map[int]string,100)->ヒント的な奴。スライスの容量の簡易版的な？
 }
 
 
