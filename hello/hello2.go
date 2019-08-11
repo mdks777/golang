@@ -330,11 +330,25 @@ L:
 	ma2[5]="E"
 	for k,v:=range ma2{
 		fmt.Println(k,v)
-	}
-	//キーの順番で表示されるかどうか「不定」毎回変わる
+	}//キーの順番で表示されるかどうか「不定」毎回変わる
 	delete(ma2,2)
 	fmt.Println(ma2)//map[1:A 3:C 4:D 5:E 6:F]
 	//m:=make(map[int]string,100)->ヒント的な奴。スライスの容量の簡易版的な？
+
+		ch := make(chan int, 10)//バッファサイズ10のチャネル、容量みたいなもん（超えたらエラー）
+	//チャネルには「先入れ先出し」「データの順序が保証される」をもつ
+	ch <- 5//チャネルに５を送信
+	ch1 := <- ch//チャネルから値を受信
+	fmt.Println(ch1)//5
+		ch2:=make(chan int)
+	go receiver(ch2)
+	for i:=0;i<10;i++{
+		ch2<-i
+	}
+		ch3:=make(chan string, 3)
+	ch3<-"APPLE"
+	fmt.Println(len(ch3),cap(ch3))//1 3
+	
 }
 
 
@@ -458,4 +472,11 @@ func pow2(a2 []int){
 		a2[i]=v*v
 	}
 	return
+}
+
+func receiver (ch2 <-chan int){//chは送信専用のチャネル
+	for {
+		i:=<-ch2
+		fmt.Println(i)
+	}//0123456789
 }
