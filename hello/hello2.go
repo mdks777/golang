@@ -185,7 +185,7 @@ L:
 	defer func() {
 		defer fmt.Printf("1")
 		defer fmt.Printf("2")
-		defer fmt.Printf("\n3")
+		defer fmt.Printf("3")
 	}()//一番最後（文末）に321
 	runDefer()//done321
 	/*go func() {
@@ -348,8 +348,16 @@ L:
 		ch3:=make(chan string, 3)
 	ch3<-"APPLE"
 	fmt.Println(len(ch3),cap(ch3))//1 3
-	
+		ch4:= make(chan int, 5)
+	go receive("1st goroutine",ch4)
+	go receive("2nd goroutine",ch4)
+	go receive("3rd goroutine",ch4)
+	for i:=0;i<20;i++{
+		ch <- i
+	}
+	close(ch4)
 }
+
 
 
 func plus(x, y int) int {
@@ -474,9 +482,20 @@ func pow2(a2 []int){
 	return
 }
 
-func receiver (ch2 <-chan int){//chは送信専用のチャネル
+func receiver(ch2 <-chan int){//chは送信専用のチャネル
 	for {
 		i:=<-ch2
 		fmt.Println(i)
 	}//0123456789
+}
+
+func receive(name string, ch4 <-chan int) {
+	for {
+		i,ok:=<-ch4
+		if ok == false {
+			break
+		}
+		fmt.Println(i)
+	}
+	fmt.Println(name + " is done")
 }
