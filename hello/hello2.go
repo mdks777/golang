@@ -9,40 +9,109 @@ import (
 func main() {
 	var xy int
 	xy = plusAlias(1, 2)
-	fmt.Printf("\n%d\n", xy)
+	fmt.Printf("\n%d\n", xy)//3
 	q, r := div(19, 7)
-	fmt.Printf("商=%d剰余=%d\n", q, r)
-	hello()
+	fmt.Printf("商=%d剰余=%d\n", q, r)//商=2剰余=5
+	hello()//Hello,World
 	fmt.Println(dosomething()) //5 0
+	/*func plus(x, y int) int {
+	return x + y
+    }
+	var plusAlias = plus
+	func div(a, b int) (int, int) {
+		q := a / b
+		r := a % b
+		return q, r
+	}
+	func hello() {
+		fmt.Printf("Hello,World\n")
+	}
+	func dosomething() (int, int) {
+		var x, y int
+		x = 5
+		return x, y
+    }*/
+	
 
 	f := func(x, y int) int { return x + y }
 	fmt.Println(f(2, 3))                                           // 5
 	fmt.Printf("%T\n", func(x, y int) int { return x + y })        //func(int, int) int
 	fmt.Printf("%#v\n", func(x, y int) int { return x + y })       //(func(int, int) int)(0x4813a0)
 	fmt.Printf("%#v\n", func(x, y int) int { return x + y }(2, 3)) // 5
-	returnFunc()()                                                 //I am a function
+	returnFunc()()//I am a function
 	ff := returnFunc()
 	ff() //I am a function
 	callFunction(func() {
 		fmt.Printf("I am a function\n") //I am a function
 	})
+	/*func returnFunc() func() {
+		return func() {
+			fmt.Printf("I am a function\n")
+		}		//return値として関数を送ってmainで実行
+	}
+	func callFunction(f func()) {
+		f()　　　//関数を引数としてcallFunction内のfに移してfを内部で実行
+	}*/
 
 	fa := later()
 	fmt.Printf(fa("Golang\n")) //
 	fmt.Printf(fa("is\n"))     //Golamg
 	fmt.Printf(fa("God\n"))    //is
-
+	/*func later() func(string) string {
+		var store string	//ひとつ前に与えられた文字列を保存するための変数
+		return func(next string) string {	//引数に文字列をとり文字列を返す関数を返す
+			s := store
+			store = next //クロージャ内（return？）にいるためローカル変数で消えるのではなく残る
+			return s	//最初ｓには何も入っていないので一個後になる
+		}
+	}*/
 	ints := integers()
-	fmt.Println(ints())
-	fmt.Println(ints())
-	fmt.Println(ints())
-
+	fmt.Println(ints())//1
+	fmt.Println(ints())//2
+	fmt.Println(ints())//3
+	/*func integers() func() int {
+		i := 0
+		return func() int {
+			i++
+			return i
+		}//クロージャ内（return？）にいるためローカル変数で消えるのではなく残る
+	}*/
+	
 	one, two, x, y, z, w, s1, s2, s := one()
 	fmt.Printf("x=%d,y=%d,%f,%f,%f,%f,%s,%s,%s", one, two, x, y, z, w, s1, s2, s)
 	あいさつ(昼の挨拶)
+	/*x=1,y=2,3.500000,4.500000,5.500000,13.500000,なんて日だ,なんて日だ,なんて日だは 
+	なんて日だこんにちは*/
+	/*const (
+		X  = float64(3.5) + iota //3.5+0
+		Y                        //3.5+1　　何も書かなければ継続
+		Z                        //3.5+2
+		W  = X + Y + Z
+		S1 = "なんて日だ" //なんて日だ
+		S2           //なんて日だ
+		S  = S1 + "は" + S2
+	)
+	const One = 1
+	func one() (int, int, float64, float64, float64, float64, string, string, string) {
+		const Two = 2
+		return One, Two, X, Y, Z, W, S1, S2, S
+	}
+	const (
+		朝の挨拶 = "おはよう"
+		昼の挨拶 = "こんにちは"
+		夜の挨拶 = "こんばんは"
+	)
+	func あいさつ(m string) {
+		fmt.Println(m)//昼の挨拶という変数の中の”こんにちは”
+	}*/
 
-	fmt.Println(appName())
-	//fmt.Println(AppName +" " + Version) -> error
+	fmt.Println(appName())//fmt.Println(AppName +" " + Version) -> error
+	//Go Application 1.0
+	/*func appName() string {
+		const AppName = "Go Application"
+		var Version = "1.0"
+		return AppName + " " + Version
+	}*/
     
     i:=0
 	for{
@@ -58,7 +127,7 @@ func main() {
     for i<15{
         if i==4 || i==9{
             i++
-            continue
+            continue//飛ばす
         }
         fmt.Printf("%d,",i)
         i++
@@ -105,31 +174,30 @@ func main() {
 		fmt.Printf("1or2\n")
 	case 3,4:
 		fmt.Printf("3or4\n")
-	default:
+	default://以外
 		fmt.Printf("unknown!\n")
 	}//1or2
 	switch n {
 	case 1,2:
 		fmt.Printf("%d\n",n)//2
 		n+=5
-		fallthrough//無条件で次の項目
+		fallthrough//無条件で次のcase
 	case 3,4:
 		fmt.Printf("%d\n",n)//7
 		n+=3
-		
+
 	case 5,6,7:
-		fmt.Printf("%d\n",n)//fallthroughされていないため条件でも不適応
+		fmt.Printf("%d\n",n)//case3.4でfallthroughされていないため条件でも不適応
 		n+=6
 	}
 	var a interface{} =3
 	ai := a.(int)
 	//af := a.(float64)->error
-	fmt.Printf("%d\n",ai)
-	fmt.Printf("%d\n",n)//10
+	fmt.Printf("%d\n",ai)//3
     var b interface{} = 3.14
-	bi, isInt := b.(int)
+	bi, isInt := b.(int)//3.14はfloat64なのでfalse
 	_, IsInt := b.(int)
-	bf, isFloat64 := b.(float64)
+	bf, isFloat64 := b.(float64)//bfには数値が入る
 	bs, isString := b.(string)
 	fmt.Printf("%d,%v,%v,%f,%v,%s,%v\n",bi,isInt,IsInt,bf,isFloat64,bs,isString)
 	//0,false,false,3.140000,true,,false
@@ -145,10 +213,10 @@ func main() {
 		fmt.Printf("unknown")
 	}//int or uint
 	var d interface{} = "hello"
-	fmt.Printf("\n%T\n",d)
+	fmt.Printf("\n%T\n",d)//string
 	
 	fmt.Printf("A")
-	goto A
+	goto A //Aへ飛ぶ
 B:	fmt.Printf("B")
 	goto C//Cがなければ無限ループ
 A:  fmt.Printf("C")
@@ -161,7 +229,7 @@ LOOP:
 			for{
 				for{
 					fmt.Printf("DONE ")
-					break LOOP
+					break LOOP//LOOPのfor全てをbreak
 				}
 				fmt.Printf("A")
 			}
@@ -175,28 +243,41 @@ L:
 	for i:=1;i<=3;i++{
 		for j:=1;j<=3;j++{
 			if j>1{
-				continue L
+				continue L//Lのforを一回分飛ばすー＞ｊは動かないがiは動く
 			}
-			fmt.Printf("%d*%d=%d\n",i,j,i*j)
+			fmt.Printf("%d*%d=%d\n",i,j,i*j)//continueはforが終わってから効力をだす
 		}
-		fmt.Printf("unsee")
-	}
+		fmt.Printf("unsee")//一回分のforがcontinueで飛ばされるからここは表示されない
+	}//1*1=1
+	//2*1=2
+	//3*1=3
 	
 	defer func() {
 		defer fmt.Printf("1")
 		defer fmt.Printf("2")
 		defer fmt.Printf("3")
-	}()//一番最後（文末）に321
+	}()//無名関数であるため()は必須
 	runDefer()//done321
+	/*func runDefer() {
+		defer fmt.Printf("1\n")
+		defer fmt.Printf("2")
+		defer fmt.Printf("3")
+		fmt.Printf("done")
+	}*/
+
 	/*go func() {
 		for {
 			fmt.Printf("sub loop")
 		}
-	}()//並列処理
+	}()//無名関数で並列処理
 	for {
 		fmt.Printf("main loop")
-	}*/
-	//-> "sub loop"と"main loop"が不規則にループ
+	}-> "sub loop"と"main loop"が不規則にループ*/
+
+
+//ここから！
+
+
 
 	fmt.Printf("NimCPU:=%d\n",runtime.NumCPU())
 	fmt.Printf("NumGoroutine:=%d\n",runtime.NumGoroutine())
