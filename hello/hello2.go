@@ -320,7 +320,7 @@ L:
 	
 	sss:= [10]int {}
 	for i:=0;i<10;i++{sss[i]=i}
-	fmt.Println(sss)
+	fmt.Println(sss)//[0 1 2 3 4 5 6 7 8 9]
 	ss1:=sss[2:4]
 	fmt.Println(ss1,len(ss1),cap(ss1))//[2 3] 2 8
 	ss2:=sss[2:4:4]
@@ -336,32 +336,52 @@ L:
 	sas :=[]string{"a","b","c"}
 	for i, r:=range sas {
 		fmt.Printf("%d,%s ",i,r)
-	}//0,0 1,1 2,2 3,3 4,4 5,5 6,6 7,7 8,8 9,9
-	
+	}//0,a 1,b 2,c
+	fmt.Printf("\n")
+
 	for i:=0;i<len(sas);i++ {
 		fmt.Printf("%d,%s ",i,sas[i])
 		sas = append(sas, "d")//要素の追加
 		if i == 10 {break}
-	}//0,a 1,b 2,c 0,a 1,b 2,c 3,d 4,d 5,d 6,d 7,d 8,d 9,d 10,d
+	}//0,a 1,b 2,c 3,d 4,d 5,d 6,d 7,d 8,d 9,d 10,d
 	//途中で追加しても結局は最後尾に追加される	
 	fmt.Printf("\n")
 	
 	asa:=[]int{1,2,3,4,5}
-	fmt.Println(sum(1,2,3),sum(asa...),sum())//6 15 0
-	
+	fmt.Println(sum(1,2,3),sum(asa...),sum(),sum(asa[2:4]...))//6 15 0 7
+	/*func sum(s ...int) int{
+		n:=0
+		for _,v:=range s {
+			n+=v
+		}
+		return n
+	}*/
 	a1:=[3]int{1,2,3}
 	a2:=[]int{1,2,3}
 	pow1(a1)//値をコピーしただけだからmainのa1は動いていない
 	pow2(a2)//とりま、動くらしい
 	fmt.Println(a1,a2)//[1 2 3] [1 4 9]
+	/*func pow1(a1 [3]int){
+		for i,v := range a1 {
+			a1[i]=v*v
+		}
+		return
+	}
+	func pow2(a2 []int){
+		for i,v := range a2 {
+			a2[i]=v*v
+		}
+		return
+	}スライスは関数間を行き来できる*/
 
-		ab:=[3]int{0,1,2}
+	ab:=[3]int{0,1,2}
 	aba:=ab[:]//ab(配列)とaba(スライス)は共有している
 	fmt.Println(len(aba))//3
 	fmt.Println(cap(aba))//3
 	ab[0]=9
 	fmt.Println(ab,aba)//[9 1 2] [9 1 2]ー＞abを変えたら両方
-		ab=[3]int{0,1,2}//リセット
+	
+	ab=[3]int{0,1,2}//リセット
 	aba=append(aba,3)//要素の追加により別のメモリ上の配列にさし代わる
 	fmt.Println(len(aba))//4
 	fmt.Println(cap(aba))//8
@@ -384,7 +404,7 @@ L:
 	m2[1.000000000000000000000002]=2
 	m2[1.000000000000000000000003]=3
 	fmt.Println(m2)//map[1:3]
-		ma:=map[int][]int{//キーがintで要素が[]int
+	ma:=map[int][]int{//キーがintで要素が[]int
 		1: {1},//[]int{1}と同じ
 		2: {1,2},
 		3: {1,2,3},
@@ -400,7 +420,7 @@ L:
 	mm,ok:=ma2[1]
 	fmt.Println(mm,ok)//A true
 	mm,ok=ma2[7]
-	fmt.Println(mm,ok)// false 空白あり
+	fmt.Println(mm,ok)//（空白） false 
 	_,ok=ma2[3]
 	fmt.Println(ok)//true
 	if _,ok =ma2[1];ok{
