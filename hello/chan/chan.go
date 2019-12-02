@@ -45,7 +45,7 @@ func main() {
 	case ch8 <- 3:
 		fmt.Println("to 3")
 	default:
-		fmt.Printf("Nothing!")
+		fmt.Printf("Nothing!")//毎回表示が代わる
 	}
 }
 
