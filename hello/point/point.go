@@ -5,5 +5,6 @@ import (
 )
 
 func main() {
-	
+	var p *int
+	fmt.Println(p==nill)//true
 }
